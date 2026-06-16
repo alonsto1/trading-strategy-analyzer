@@ -1,22 +1,5 @@
 # optimized_backtester.py
-"""
-A drop‑in replacement for the original Backtester that preserves *all* trading
-logic but speeds execution by minimising per‑row Pandas overhead.  The key
-changes are:
 
-*  After computing indicators we extract the required columns to NumPy arrays
-   and iterate over raw ndarray indices – this is several‑fold faster than
-   repeated ``df.iloc`` access.
-*  Re‑use local variables inside the tight loop to avoid attribute look‑ups.
-*  Pre‑compute ``hour`` and ``minute`` arrays so we can branch on intraday
-   session times without constructing a ``Timestamp`` object each pass.
-*  Keep the public API, return structure and debug print‑outs identical to the
-   original code so that existing notebooks / dashboards do **not** need to be
-   changed.
-
-No third‑party acceleration libraries such as *numba* were introduced, thus the
-code remains pure‑Python + NumPy/Pandas.
-"""
 
 from __future__ import annotations
 from datetime import datetime, timedelta
