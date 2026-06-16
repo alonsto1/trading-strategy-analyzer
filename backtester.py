@@ -53,7 +53,7 @@ class Backtester:
         self.cfg = cfg or StrategyConfig()
 
     # ---------------------------------------------------------------------
-    # Indicator helpers – unchanged except for minor NumPy micro‑optimisations
+    # Indicator helpers
     # ---------------------------------------------------------------------
     def _ema_np(self, arr: np.ndarray, period: int) -> np.ndarray:
         if arr.size < period:
@@ -119,7 +119,7 @@ class Backtester:
         return df
 
     # ------------------------------------------------------------------
-    # Position sizing helper (unchanged)
+    # Position sizing helper 
     # ------------------------------------------------------------------
     def _position_size(self, atr: float) -> int:
         dollar_risk = self.cfg.ACCOUNT_EQUITY * self.cfg.RISK_PERCENT
@@ -134,7 +134,7 @@ class Backtester:
         return cons
 
     # ------------------------------------------------------------------
-    # Main back‑test routine – rewritten to iterate over NumPy arrays
+    # Main back‑test routine 
     # ------------------------------------------------------------------
     def run(self) -> Dict[str, Union[List, float]]:
         # ------------------------------------------------------------------
@@ -144,7 +144,7 @@ class Backtester:
         df = df[df["t"].dt.weekday < 5].reset_index(drop=True)
         df = self._compute_indicators(df)
 
-        # Extract the required columns to NumPy ndarrays **once**.
+        # Extract the required columns to NumPy ndarrays.
         cols = [
             "t", "c", "h", "l", "ema_50", "ema_200", "ema_500", "ema_50_slope",
             "ema_200_slope", "ema_500_slope", "macd_line", "macd_signal", "macd_slope", "roc", "atr",
@@ -206,7 +206,7 @@ class Backtester:
         }
 
         # ------------------------------------------------------------------
-        # 3.  Main loop – iterate using **raw indices** into the ndarrays
+        # 3.  Main loop – iterate using indices into the ndarrays
         # ------------------------------------------------------------------
         for i in range(cfg.MIN_CANDLES, len(df)):
             # Fast array access
@@ -472,7 +472,7 @@ class Backtester:
                 )
 
         # ------------------------------------------------------------------
-        # 4.  Return structure (unchanged vs original)
+        # 4.  Return structure 
         # ------------------------------------------------------------------
         return {"trades": trades, "pnl": profit, "candles": df.to_dict("records")}
 
